@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample E-commerce with Razorpay</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h1>Sample Product</h1>
+  <p>Price: ₹1</p>
+  <button id="orderNow">Order Now</button>
+
+  <script>
+    const options = {
+      key: "rzp_live_g38t6AS9bDlB8i", // Replace with your Razorpay live key
+      amount: 100, // 1 INR in paise
+      currency: "INR",
+      name: "Elegets Electronics",
+      description: "Payment for Sample Product",
+      image: "kits (1).jpg", // Ensure this path is correct
+      handler: function (response) {
+        // Store payment details in localStorage
+        localStorage.setItem("paymentDetails", JSON.stringify({
+          product: "Sample Product",
+          price: "₹1",
+          payment_id: response.razorpay_payment_id
+        }));
+
+        // Redirect to confirmation page
+        window.location.href = "test1.html";
+      },
+      prefill: {
+        name: "Madeti Pavan",
+        email: "email@example.com",
+        contact: "1234567890"
+      },
+      theme: {
+        color: "#3399cc"
+      }
+    };
+
+    document.getElementById('orderNow').onclick = function(e) {
+      window.razorpayInstance = new Razorpay(options);
+      razorpayInstance.open();
+      e.preventDefault();
+    };
+  </script>
+</body>
+</html>

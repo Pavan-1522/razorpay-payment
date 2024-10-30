@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample E-commerce with Razorpay</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h1>Sample Product</h1>
+  <p>Price: ₹1</p>
+  <button id="orderNow">Order Now</button>
+
+  <script>
+    // Razorpay payment options
+    const options = {
+      key: "rzp_test_qh1QueXAt3cInA", // Replace with your Razorpay test key
+      amount: 100, // 1 INR in paise
+      currency: "INR",
+      name: "elegets E-commerce",
+      description: "Payment for Sample Product",
+      image: "https://yourlogo.com/logo.png", // Optional logo URL
+      handler: function (response) {
+        alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+
+        // Close Razorpay modal programmatically
+        if (typeof razorpayInstance !== 'undefined') {
+          razorpayInstance.close();
+        }
+      },
+      prefill: {
+        name: "Your Name",
+        email: "email@example.com",
+        contact: "1234567890"
+      },
+      notes: {
+        address: "Test Transaction"
+      },
+      theme: {
+        color: "#3399cc"
+      },
+      modal: {
+        ondismiss: function() {
+          alert("Payment process was interrupted or closed.");
+        }
+      }
+    };
+
+    // Button click to open Razorpay Checkout
+    document.getElementById('orderNow').onclick = function(e) {
+      // Create instance and store it in a variable to allow closing later
+      window.razorpayInstance = new Razorpay(options);
+      razorpayInstance.open();
+      e.preventDefault();
+    }
+  </script>
+</body>
+</html>
